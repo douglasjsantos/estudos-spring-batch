@@ -38,13 +38,12 @@ public class batchConfig {
     }
 
     @Bean
-    public Step imprimeParImparStep(JobRepository jobRepository, PlatformTransactionManager transactionManager) {
-        return new StepBuilder("imprimeParImparStep", jobRepository)
-                .<Integer, String>chunk(1, transactionManager) // Define o tamanho do chunk e o transactionManager
-                .reader(contaAteDezReader())
-                .processor(parOuImparProcessor())
-                .writer(imprimeWriter())
-                .build();
+    public Step helloWorld(JobRepository jobRepository, PlatformTransactionManager transactionManager) {
+        return new StepBuilder("helloWorld", jobRepository)
+                .tasklet((StepContribution contribution, ChunkContext chunkContext)-> {
+                    System.out.println("Hello");
+                    return RepeatStatus.FINISHED;
+                }, transactionManager).build();
     }
 
     @Bean
