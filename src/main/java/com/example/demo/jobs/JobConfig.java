@@ -19,7 +19,7 @@ public class JobConfig {
     public Job job(JobRepository jobRepository, Step fetchUserDataAndStoreDBStep){
 
         logger.info("Start job execution ...");
-        
+
         return new JobBuilder("job", jobRepository)
                 .start(fetchUserDataAndStoreDBStep)
                 .incrementer(new RunIdIncrementer())
