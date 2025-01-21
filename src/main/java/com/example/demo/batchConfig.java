@@ -30,39 +30,14 @@ public class batchConfig {
 
 
     @Bean
-    public Job job(JobRepository jobRepository, Step imprimeParImparStep) {
+    public Job job(JobRepository jobRepository, Step printHelloStep) {
         return new JobBuilder("job", jobRepository)
+                .start(printHelloStep)
                 .incrementer(new RunIdIncrementer())
-                .start(imprimeParImparStep)
                 .build();
     }
 
-    @Bean
-    public Step helloWorld(JobRepository jobRepository, PlatformTransactionManager transactionManager) {
-        return new StepBuilder("helloWorld", jobRepository)
-                .tasklet((StepContribution contribution, ChunkContext chunkContext)-> {
-                    System.out.println("Hello");
-                    return RepeatStatus.FINISHED;
-                }, transactionManager).build();
-    }
 
-    @Bean
-    public IteratorItemReader<Integer> contaAteDezReader() {
-        List<Integer> numerosDeUmAteDez = List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
-        return new IteratorItemReader<>(numerosDeUmAteDez.iterator());
-    }
 
-    @Bean
-    public FunctionItemProcessor<Integer, String> parOuImparProcessor() {
-        return new FunctionItemProcessor<>(item ->
-                item % 2 == 0
-                        ? String.format("Item %s é Par", item)
-                        : String.format("Item %s é Ímpar", item)
-        );
-    }
 
-    @Bean
-    public ItemWriter<String> imprimeWriter() {
-        return itens -> itens.forEach(System.out::println);
-    }
 }
