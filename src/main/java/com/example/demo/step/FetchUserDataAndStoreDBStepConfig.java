@@ -15,7 +15,7 @@ public class FetchUserDataAndStoreDBStepConfig {
     @Bean
     public Step FetchUserDataAndStoreDBStep(ItemReader<UserDTO> fetchUserDataReader, JobRepository jobRepository){
         return new StepBuilder("fetchUserDataAndStoreDBStep", jobRepository)
-                .<UserDTO, UserDTO>chunk(10, transactionManager)
+                .<UserDTO, UserDTO>chunk(5, transactionManager)
                 .reader(fetchUserDataReader)
                 .build();
     }
